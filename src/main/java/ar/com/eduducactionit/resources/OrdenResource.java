@@ -51,8 +51,6 @@ public class OrdenResource {
 			) throws URISyntaxException {
 		
 		//saber si existe el socio
-		//http://localhost:8081/socio/ordenRequestDto.getSocioId() => Socio
-//		RestTemplate restTemplateClient = new RestTemplate();
 		SocioDTO socioDto = restTemplateClient
 			.getForObject(sociosPathUrlBase + "/socio/"+ordenRequestDto.getSocioId(),
 				SocioDTO.class);
