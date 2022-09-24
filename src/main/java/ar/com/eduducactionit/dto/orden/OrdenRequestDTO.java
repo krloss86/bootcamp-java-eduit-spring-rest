@@ -13,6 +13,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class OrdenRequestDTO {
+	
+	@NotNull
+	private Long ordenId;
+	
 	@NotNull
 	@Min(value = 1)
 	private Long estadoOrdenId;
