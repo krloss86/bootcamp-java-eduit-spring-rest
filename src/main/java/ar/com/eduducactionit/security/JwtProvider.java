@@ -1,6 +1,7 @@
 package ar.com.eduducactionit.security;
 
 import java.util.Date;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +57,7 @@ public class JwtProvider {
 		User userPrincipal = (User)authentication.getPrincipal();
 		
 		Claims claims = Jwts.claims().setSubject(userPrincipal.getUsername());
-		claims.put("roles", userPrincipal.getAuthorities().stream().map(x -> x.getAuthority()));
+		claims.put("roles", userPrincipal.getAuthorities().stream().map(x->x.getAuthority()).collect(Collectors.toList()));
 		
 		Date now = new Date();
 		
