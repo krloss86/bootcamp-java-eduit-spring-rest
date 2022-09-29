@@ -57,14 +57,12 @@ public class JwtProvider {
 		User userPrincipal = (User)authentication.getPrincipal();
 		
 		Claims claims = Jwts.claims().setSubject(userPrincipal.getUsername());
-		claims.put("roles", userPrincipal.getAuthorities().stream().map(x->x.getAuthority()).collect(Collectors.toList()));
-		
-		Date now = new Date();
+		claims.put("roles", userPrincipal.getAuthorities().stream().map(x->"ROLE_"+x.getAuthority()).collect(Collectors.toList()));
 		
 		return Jwts.builder()
+			.setIssuedAt(new Date())
+			.setExpiration(new Date(new Date().getTime() + this.expiration * 1000))
 			.signWith(SignatureAlgorithm.HS512, this.jwtSecret)
-			.setExpiration(new Date(now.getTime() + this.expiration * 1000))
-			.setIssuedAt(now)
 			.setClaims(claims)
 			.compact()
 			;

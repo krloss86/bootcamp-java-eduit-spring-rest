@@ -52,7 +52,7 @@ public class OrdenResource {
 		return ResponseEntity.ok(ordenes);
 	}
 	
-	@PostMapping("/orden")
+	@PostMapping(value="/orden",consumes = "application/json", produces = "application/json")
 	public ResponseEntity<?> post(
 			@Valid @RequestBody OrdenRequestDTO ordenRequestDto
 			) throws URISyntaxException {

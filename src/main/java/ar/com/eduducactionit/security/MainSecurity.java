@@ -48,7 +48,8 @@ public class MainSecurity extends WebSecurityConfigurerAdapter{
 		//swagger genera carpetas: vamos a agregar
 			http.cors().and().csrf().disable()
 			.authorizeRequests()
-			.antMatchers(HttpMethod.GET,"/").permitAll()
+			.antMatchers(HttpMethod.GET, "/orden/**","/").permitAll()
+//			.antMatchers(HttpMethod.POST, "/orden/**").permitAll()//eliminar
 			.antMatchers("/auth/**").permitAll()
 			//los recursos de swagger
 			.antMatchers("/v2/api-docs","/configuration/**","/swagger*/**","/webjar/**").permitAll()
