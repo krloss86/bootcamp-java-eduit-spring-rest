@@ -7,6 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,7 +18,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import ar.com.eduducactionit.security.service.MyUserDetailsService;
 
 public class JwtTokenFilter extends OncePerRequestFilter {
-	//logger!
+    private final static Logger logger = LoggerFactory.getLogger(JwtTokenFilter.class);
 	
 	@Autowired
 	private JwtProvider jwtProvider;
@@ -34,11 +36,12 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 			if(token != null && jwtProvider.validateToken(token)) {
 				String username = jwtProvider.getNombreUsuarioFromToken(token);//EDUIT/GUESS
 				UserDetails userDetails = this.userDetailService.loadUserByUsername(username);
-				UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails,null, userDetails.getAuthorities());
+				UsernamePasswordAuthenticationToken auth = 
+						new UsernamePasswordAuthenticationToken(userDetails,null, userDetails.getAuthorities());
 				SecurityContextHolder.getContext().setAuthentication(auth);
 			}
 		}catch (Exception e) {
-			e.printStackTrace();
+            logger.error("fail en el método doFilter " + e.getMessage());
 		}
 		
 		filterChain.doFilter(request, response);//continuea evaluando los demas filtros 

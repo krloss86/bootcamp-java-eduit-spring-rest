@@ -60,10 +60,10 @@ public class JwtProvider {
 		claims.put("roles", userPrincipal.getAuthorities().stream().map(x->"ROLE_"+x.getAuthority()).collect(Collectors.toList()));
 		
 		return Jwts.builder()
-			.setIssuedAt(new Date())
-			.setExpiration(new Date(new Date().getTime() + this.expiration * 1000))
-			.signWith(SignatureAlgorithm.HS512, this.jwtSecret)
 			.setClaims(claims)
+			.signWith(SignatureAlgorithm.HS512, this.jwtSecret)
+			.setIssuedAt(new Date())
+			.setExpiration(new Date(System.currentTimeMillis() + this.expiration * 1000))
 			.compact()
 			;
 	}
