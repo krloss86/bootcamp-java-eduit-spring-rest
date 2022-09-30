@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,7 +52,8 @@ public class OrdenResource {
 		return ResponseEntity.ok(ordenes);
 	}
 	
-	@PostMapping("/orden")
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@PostMapping(value="/orden",consumes = "application/json", produces = "application/json")
 	public ResponseEntity<?> post(
 			@Valid @RequestBody OrdenRequestDTO ordenRequestDto
 			) throws URISyntaxException {
@@ -80,6 +82,7 @@ public class OrdenResource {
 		return ResponseEntity.created(new URI("/orden/"+newOrden.getId())).build();
 	}
 	
+	@PreAuthorize("hasAuthority('USER')")
 	@GetMapping(value="/orden/{id}",produces = "application/json")
 	public ResponseEntity<Orden> get(
 			@PathVariable(name="id", required = true)
@@ -95,6 +98,7 @@ public class OrdenResource {
 		return ResponseEntity.ok(ordenOptional.get());
 	}
 	
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@PutMapping(value="/orden/{id}",produces = "application/json", consumes = "application/json")
 	public ResponseEntity<?> update(
 			@PathVariable(name="id", required = true) 
@@ -132,6 +136,7 @@ public class OrdenResource {
 				
 	}
 
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@DeleteMapping("/orden/{id}")
 	public ResponseEntity<Orden> delete(
 			@PathVariable(name = "id",required = true) 
